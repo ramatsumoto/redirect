@@ -1,0 +1,41 @@
+<!-- This page exists solely to have a link to Kula Master that is https -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+</head>
+<body style="display: flex; justify-content: center; flex-flow: wrap;">
+    <button>Copy password</button>
+    <hr style="flex-basis: 100%; height: 0; border: 0">
+    <a></a>
+    <textarea rows="1" cols="1" style="position: absolute; top: -100px"></textarea>
+    <script>
+        const frame = document.getElementById('iframe');
+        const q = [...new URLSearchParams(location.search)]?.[0];
+        if(q===undefined) window.location.href='https://www.google.com';
+        const b = document.getElementsByTagName('a')[0];
+        if(q[0].length == 1 && q[1].length == 12) {
+            const p = [...q[1]].reduce((I, l) => I.at(-1).length + ~[] == 2 ? [...I, l] : [...I.slice(...[+[],~[]]), I.at(-1) + l], ['']).map(I => +I);
+            b.href = b.innerText = `http://${p.join('.')}:8080/kula-master`;
+        } else {
+            b.innerText = 'what?'
+        }
+        const d = document.getElementsByTagName('textarea')[0];
+        d.value = ''
+        document.getElementsByTagName('button')[0].addEventListener('click', e => {
+            d.value = q[0].toUpperCase() + 'point#123';
+            d.select();
+            if(document.execCommand('copy')) {
+                d.remove();
+                e.target.remove();
+                window.alert('Successfully copied password. \nAttempting to redirect to Kula Master.');
+                location.href = b.href;
+            } else {
+                e.target.innerText = "Could not copy password :(";
+                e.target.toggleAttribute('disabled', true);
+            }
+        });
+    </script>
+</body>
+</html>
