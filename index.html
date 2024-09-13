@@ -3,16 +3,17 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>title</title>
+    <title>Kula Master Redirect</title>
 </head>
 <body style="display: flex; justify-content: center; flex-flow: wrap;">
-    <button>Copy password</button>
+    <button>Copy password and open link</button>
     <hr style="flex-basis: 100%; height: 0; border: 0">
     <a></a>
     <textarea rows="1" cols="1" style="position: absolute; top: -100px"></textarea>
     <script>
         const frame = document.getElementById('iframe');
-        const q = [...new URLSearchParams(location.search)]?.[0];
+        const e = [...new URLSearchParams(location.search)];
+        const q = e[0];
         if(q===undefined) window.location.href='https://www.google.com';
         const b = document.getElementsByTagName('a')[0];
         if(q[0].length == 1 && q[1].length == 12) {
@@ -20,6 +21,10 @@
             b.href = b.innerText = `http://${p.join('.')}:8080/kula-master`;
         } else {
             b.innerText = 'what?'
+        }
+        if(e[1]?.[0] == 'skip') {
+            location.href = b.href;
+            b.innerText = `If you're reading this, then the Kula Master you're attempting to access is probably unavailable.`;
         }
         const d = document.getElementsByTagName('textarea')[0];
         d.value = ''
@@ -29,7 +34,6 @@
             if(document.execCommand('copy')) {
                 d.remove();
                 e.target.remove();
-                window.alert('Successfully copied password. \nAttempting to redirect to Kula Master.');
                 location.href = b.href;
             } else {
                 e.target.innerText = "Could not copy password :(";
